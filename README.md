@@ -19,7 +19,7 @@ Radar to Catchment supports the following data sets (more information is availab
 * NASA GPM IMERG HQ Precipitation (hdf5 format with a thirty minutes accumulation of estimated precipitation in mm/h. Available at https://pmm.nasa.gov/data-access/downloads/gpm).
 
 ## Code availability ##
-Radar to Catchment is available as python-script in this repository for both Linux and Windows. It is recommended to first read the available user manual before making use of the Radar2Catchment tool. 
+Radar to Catchment is available as python-script in this repository for both Linux and Windows. It is recommended to first read the available user manual before making use of the Radar to Catchment tool. 
 
 ## Copyright ##
 Radar to Catchment is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your opinion) any later version. This program is redistributed in the hope that it will be useful, but without any warranty and without even the implied warranty of merchantability or fitness for a particular purpose. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licences/. The producer of this tool is by
