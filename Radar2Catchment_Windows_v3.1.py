@@ -1,5 +1,5 @@
 #
-# Radar to Catchment v3.0 for Windows
+# Radar to Catchment v3.1 for Windows
 #
 # Copyright Ruben Imhoff
 #
@@ -1899,8 +1899,7 @@ if FirstQues == 2:
 				print("One file could not be deleted, the tool continues.")
 
 
-	else:
-		print("The given choice was not one of the possible choices.")
+	print("Done with this part.")
  	
 
 	########################################################
@@ -1943,26 +1942,25 @@ if FirstQues == 2:
 			Outfile = os.path.join(Resultpath,'Stats.csv') 				
 			outcsv = open(Outfile,"wb")
 			writer = csv.writer(outcsv, delimiter = ",")		
-			writer.writerow(['Name','Minimum','Maximum','Mean'])		
+			writer.writerow(['Name','Minimum','Maximum','Mean'])
+
+			Loopnum = 0
 		
 			for x in range(0, len(ListResult)):
+				Loopnum = Loopnum + 1
+				Percentage = (float(Loopnum)/float(len(ListResult)))*100
+				print Percentage, "% of statistics completed."
 				Infile = ListResult[x]
 				Basename = os.path.basename(Infile)
 				Basenametxt = os.path.splitext(Basename)[0]
 			
 				gtif = gdal.Open(Infile)
 				srcband = gtif.GetRasterBand(1)
-				srcband.SetNoDataValue(-999)
-				#stats = subprocess.call(['gdalinfo', '-stats', srcband])
-				Values = srcband.ReadAsArray(0,0,cols,rows)
-				Values = Values.flatten()
-				CatchmentValues = ma.masked_where(Values == -999, Values)
-				#for i in Values:
-				#	if i >= 0:
-				#		CatchmentValues.append(i)
-				statsMean = mean(CatchmentValues)
-				statsMin = min(CatchmentValues)
-				statsMax = max(CatchmentValues)
+				Values = srcband.ReadAsArray()
+				Values_new = np.where(Values < 0, np.NaN, Values)
+				statsMean = np.nanmean(Values_new)
+				statsMin = np.nanmin(Values_new)
+				statsMax = np.nanmax(Values_new)
 				writer.writerow([Basenametxt,statsMin,statsMax,statsMean])		
 		
 			print("The calculation was successful. Note that the rows in the csv-files might not be ordered chronologically.")		
