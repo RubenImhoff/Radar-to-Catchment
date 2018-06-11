@@ -1,5 +1,5 @@
 #
-# Radar to Catchment v3.0 for Linux
+# Radar to Catchment v3.1 for Linux
 #
 # Copyright Ruben Imhoff
 #
@@ -1849,9 +1849,8 @@ if FirstQues == 2:
 			except WindowsError, e:
 				print("One file could not be deleted, the tool continues.")
 
-	else:
-		print("The given choice was not one of the possible choices.")
-
+	print("Done with this part.")
+	
 	########################################################
 	# Give the possibility to get statistics, such as the mean, for the output files
 	########################################################
@@ -1889,8 +1888,13 @@ if FirstQues == 2:
 			outcsv = open(Outfile,"wb")
 			writer = csv.writer(outcsv, delimiter = ",")		
 			writer.writerow(['Name','Minimum','Maximum','Mean','StDev'])		
+
+			Loopnum = 0
 		
 			for x in range(0, len(ListResult)):
+				Loopnum = Loopnum + 1
+				Percentage = (float(Loopnum)/float(len(ListResult)))*100
+				print Percentage, "% of statistics completed."
 				Infile = ListResult[x]
 				Basename = os.path.basename(Infile)
 				Basenametxt = os.path.splitext(Basename)[0]
