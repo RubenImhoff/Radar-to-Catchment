@@ -1,5 +1,5 @@
 #
-# Radar to Catchment v3.1 for Windows
+# Radar to Catchment v3.2 for Windows
 #
 # Copyright Ruben Imhoff
 #
@@ -1964,7 +1964,8 @@ if FirstQues == 2:
 				writer.writerow([Basenametxt,statsMin,statsMax,statsMean])		
 		
 			print("The calculation was successful. Note that the rows in the csv-files might not be ordered chronologically.")		
-			
+			outcsv.flush()
+			outcsv.close()
 			break
 			
 		if StatQues == "2":
