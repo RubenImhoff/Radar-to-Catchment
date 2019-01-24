@@ -1,5 +1,5 @@
 #
-# Radar to Catchment v3.2 for Linux
+# Radar to Catchment v3.3 for Linux
 #
 # Copyright Ruben Imhoff
 #
@@ -93,7 +93,7 @@ if FirstQues == 1:
 	mainloop()							
 				
 	DataQuestion = e1.get()
-	print DataQuestion		
+	print(DataQuestion)
 	
 	if DataQuestion == "1":
 		########################################################
@@ -665,7 +665,7 @@ if FirstQues == 2:
 	mainloop()							
 				
 	DataQuestion = e1.get()
-	print DataQuestion
+	print(DataQuestion)
 	
 	#########################################################
 	# Reproject the geometry of the shapefile
@@ -743,14 +743,24 @@ if FirstQues == 2:
 	driver = ogr.GetDriverByName('ESRI Shapefile')
 	shapefile = driver.Open(outfile)
 	source_layer = shapefile.GetLayer()
+	# Obtain xmin, xmax, ymin and ymax as floats
 	x_min, x_max, y_min, y_max = source_layer.GetExtent()
+    
+	# Round the values for xmin, xmax, ymin and ymax (make a rough rounding)
+	# in order to not get a too small extent. Finally, make integer values of it.
+	xmin = int(round(x_min, 0) - 1)
+	xmax = int(round(x_max, 0) + 1)
+	ymin = int(round(y_min, 0) - 1)
+	ymax = int(round(y_max, 0) + 1)
 
 	# 4. Create Target - TIFF
-	cols = int( (x_max - x_min) / x_res )
-	rows = int( (y_max - y_min) / y_res )
+	cols = int( (xmax - xmin) / x_res )
+	rows = int( (ymax - ymin) / y_res )
 
+	# Save raster
+	# TO DO: Make this an option, it's not necessary to save it in all cases.
 	_raster = gdal.GetDriverByName('GTiff').Create(_out, cols, rows, 1, gdal.GDT_Byte)
-	_raster.SetGeoTransform((x_min, x_res, 0, y_max, 0, -y_res))
+	_raster.SetGeoTransform((xmin, x_res, 0, ymax, 0, -y_res))
 	projection = osr.SpatialReference()
 	projection.ImportFromProj4(ShapefileProj)
 	_raster.SetProjection(projection.ExportToWkt())
@@ -1894,7 +1904,7 @@ if FirstQues == 2:
 			for x in range(0, len(ListResult)):
 				Loopnum = Loopnum + 1
 				Percentage = (float(Loopnum)/float(len(ListResult)))*100
-				print Percentage, "% of statistics completed."
+				print(Percentage, "% of statistics completed.")
 				Infile = ListResult[x]
 				Basename = os.path.basename(Infile)
 				Basenametxt = os.path.splitext(Basename)[0]
