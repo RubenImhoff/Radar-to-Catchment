@@ -1,5 +1,5 @@
 #
-# Radar to Catchment v3.1 for Linux
+# Radar to Catchment v3.2 for Linux
 #
 # Copyright Ruben Imhoff
 #
@@ -758,7 +758,7 @@ if FirstQues == 2:
 	_band.SetNoDataValue(NoData_value)
 
 	# 5. Rasterize
-	gdal.RasterizeLayer(_raster, [1], source_layer)
+	gdal.RasterizeLayer(_raster, [1], source_layer, None, None, [1], ['ALL_TOUCHED=TRUE'])
 
 	inraster = _out
 
