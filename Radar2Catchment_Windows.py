@@ -25,9 +25,9 @@ import subprocess
 from osgeo import gdal, gdalnumeric, ogr, osr
 from PIL import Image, ImageDraw
 from subprocess import call
-import Tkinter
+import tkinter
 import tkFileDialog
-from Tkinter import *
+from tkinter import *
 import inspect
 from numpy import *
 import matplotlib
