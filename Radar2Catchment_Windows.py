@@ -1008,7 +1008,7 @@ if FirstQues == 2:
 			
 			try:
 				os.remove(rasterfile)
-			except WindowsError, e:
+			except WindowsError:
 				print("One file could not be deleted, the tool continues.")
 
 	if DataQuestion == "2":
@@ -1218,7 +1218,7 @@ if FirstQues == 2:
 			
 			try:
 				os.remove(rasterfile)
-			except WindowsError, e:
+			except WindowsError:
 				print("One file could not be deleted, the tool continues.")			
 
 
@@ -1372,7 +1372,7 @@ if FirstQues == 2:
 
 			try:
 				os.remove(rasterfile)
-			except WindowsError, e:
+			except WindowsError:
 				print("One file could not be deleted, the tool continues.")
 
 	if DataQuestion == "4":
@@ -1535,7 +1535,7 @@ if FirstQues == 2:
 
 			try:
 				os.remove(rasterfile)
-			except WindowsError, e:
+			except WindowsError:
 				print("One file could not be deleted, the tool continues.")
 
 	if DataQuestion == "5":
@@ -1743,7 +1743,7 @@ if FirstQues == 2:
 
 			try:
 				os.remove(rasterfile)
-			except WindowsError, e:
+			except WindowsError:
 				print("One file could not be deleted, the tool continues.")
 			
 	if DataQuestion == "6":
@@ -1905,7 +1905,7 @@ if FirstQues == 2:
 	
 			try:
 				os.remove(rasterfile)
-			except WindowsError, e:
+			except WindowsError:
 				print("One file could not be deleted, the tool continues.")
 
 
@@ -1959,7 +1959,7 @@ if FirstQues == 2:
 			for x in range(0, len(ListResult)):
 				Loopnum = Loopnum + 1
 				Percentage = (float(Loopnum)/float(len(ListResult)))*100
-				print Percentage, "% of statistics completed."
+				print(Percentage, "% of statistics completed.")
 				Infile = ListResult[x]
 				Basename = os.path.basename(Infile)
 				Basenametxt = os.path.splitext(Basename)[0]
@@ -2076,7 +2076,7 @@ if FirstQues == 2:
 				subprocess.call(['gdalwarp', Infile, Outfile, '-s_srs', ShapefileProj, '-t_srs', ShapeProj])
 				try:
 					os.remove(Infile)
-				except WindowsError, e:
+				except WindowsError:
 					print("One file could not be deleted, the tool continues.")
 			break
 	
@@ -2135,7 +2135,7 @@ if FirstQues == 2:
 		
 				try:
 					os.remove(Infile)
-				except WindowsError, e:
+				except WindowsError:
 					print("One file could not be deleted, the tool continues.")
 			
 			break
