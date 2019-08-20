@@ -26,7 +26,7 @@ from osgeo import gdal, gdalnumeric, ogr, osr
 from PIL import Image, ImageDraw
 from subprocess import call
 import tkinter
-import tkFileDialog
+from tkinter import filedialog
 from tkinter import *
 import inspect
 from numpy import *
@@ -99,9 +99,9 @@ if FirstQues == 1:
 		########################################################
 		# Open the hdf5-files for the Netherlands, in this case the NL_25 dataset.
 		########################################################
-		root = Tkinter.Tk()
+		root = tkinter.Tk()
 		root.withdraw()
-		dirpath = tkFileDialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
+		dirpath = filedialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
 		list = []
 		for root, dirnames, filenames in os.walk(dirpath):
 			for filename in filenames:
@@ -215,9 +215,9 @@ if FirstQues == 1:
 		########################################################
 		# Open the hdf5-files for the Netherlands, in this case the NL_21 dataset.
 		########################################################
-		root = Tkinter.Tk()
+		root = tkinter.Tk()
 		root.withdraw()
-		dirpath = tkFileDialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
+		dirpath = filedialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
 		list = []
 		for root, dirnames, filenames in os.walk(dirpath):
 			for filename in filenames:
@@ -330,9 +330,9 @@ if FirstQues == 1:
 		########################################################
 		# Open the radolan radar dataset for Germany.
 		########################################################
-		root = Tkinter.Tk()
+		root = tkinter.Tk()
 		root.withdraw()
-		dirpath = tkFileDialog.askdirectory(parent=root, title='Open the main folder with ASCII-files and press OK')
+		dirpath = filedialog.askdirectory(parent=root, title='Open the main folder with ASCII-files and press OK')
 		radolanlist = []
 		for root, dirnames, filenames in os.walk(dirpath):
 			for filename in filenames:
@@ -389,9 +389,9 @@ if FirstQues == 1:
 		########################################################
 		# Open the NETCDF-files for the Netherlands. In this case that is the monthly averaged precipitation, but it could also be hourly or five minute data.
 		########################################################
-		root = Tkinter.Tk()
+		root = tkinter.Tk()
 		root.withdraw()
-		dirpath = tkFileDialog.askdirectory(parent=root, title='Open the main folder with NETCDF-files and press OK')
+		dirpath = filedialog.askdirectory(parent=root, title='Open the main folder with NETCDF-files and press OK')
 		list = []
 		for root, dirnames, filenames in os.walk(dirpath):
 			for filename in filenames:
@@ -458,9 +458,9 @@ if FirstQues == 1:
 		########################################################
 		# Open the hdf5-files for the OPERA-dataset of Europe.
 		########################################################
-		root = Tkinter.Tk()
+		root = tkinter.Tk()
 		root.withdraw()
-		dirpath = tkFileDialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
+		dirpath = filedialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
 		list = []
 		for root, dirnames, filenames in os.walk(dirpath):
 			for filename in filenames:
@@ -573,14 +573,14 @@ if FirstQues == 1:
 		# Open the hdf5-files of the NASA GPM IMERG High Quality Precipitation level 3 dataset.
 		########################################################
 
-		dirpath = tkFileDialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
+		dirpath = filedialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
 		list = []
 		for root, dirnames, filenames in os.walk(dirpath):
 			for filename in filenames:
 				if filename.endswith('.HDF5'):
 					list.append(os.path.join(root,filename))
 
-		root = Tkinter.Tk()
+		root = tkinter.Tk()
 		root.withdraw()	
 		
 		########################################################
@@ -642,9 +642,9 @@ if FirstQues == 2:
 	# Time to read the shapefile
 	#########################################################
 
-	root = Tkinter.Tk()
+	root = tkinter.Tk()
 	root.withdraw()
-	filename = tkFileDialog.askopenfilename(parent=root,filetypes=[("ESRI Shapefile","*.shp"),("all files","*.*")],title='Choose a Shapefile of your study area')
+	filename = filedialog.askopenfilename(parent=root,filetypes=[("ESRI Shapefile","*.shp"),("all files","*.*")],title='Choose a Shapefile of your study area')
 	sf = shapefile.Reader(filename)
 
 	#########################################################
@@ -807,7 +807,7 @@ if FirstQues == 2:
 		# Open the hdf5-files for the Netherlands, in this case the NL_25 dataset.
 		########################################################
 
-		dirpath = tkFileDialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
+		dirpath = filedialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
 		list = []
 		for root, dirnames, filenames in os.walk(dirpath):
 			for filename in filenames:
@@ -901,8 +901,8 @@ if FirstQues == 2:
 			geotransform = (xmin, xres, 0, ymin, 0, -yres)
 
 			# We are going to create the raster with the right coordinate encoding and projection
-			def array_to_raster(array):
-				dst_filename = os.path.join(dirpath,'RasterIn', basenametxt+'.tiff')
+			def array_to_raster(array, outfilename):
+				dst_filename = outfilename
 				x_pixels = 700
 				y_pixels = 765
 				pixel_size = 1
@@ -932,10 +932,10 @@ if FirstQues == 2:
 				dataset.GetRasterBand(1).WriteArray(array)
 				dataset.FlushCache() # This is the way to write it to the disk
 				return dataset, dataset.GetRasterBand(1)
-
-			array_to_raster(np_data)
 		
 			rasterfile = os.path.join(dirpath,'RasterIn', basenametxt+'.tiff')
+			print(rasterfile)   
+			array_to_raster(np_data, rasterfile)
 
 			#########################################################
 			# Time to clip the raster with the rasterized shapefile
@@ -1016,7 +1016,7 @@ if FirstQues == 2:
 		# Open the hdf5-files for the Netherlands, in this case NL21 dataset.
 		########################################################
 
-		dirpath = tkFileDialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
+		dirpath = filedialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
 		list = []
 		for root, dirnames, filenames in os.walk(dirpath):
 			for filename in filenames:
@@ -1110,8 +1110,8 @@ if FirstQues == 2:
 			geotransform = (xmin, xres, 0, ymin, 0, -yres)
 
 			# We are going to create the raster with the right coordinate encoding and projection
-			def array_to_raster(array):
-				dst_filename = os.path.join(dirpath,'RasterIn', basenametxt+'.tiff')
+			def array_to_raster(array, outfilename):
+				dst_filename = outfilename
 				x_pixels = 256
 				y_pixels = 256
 				pixel_size = 2.5
@@ -1141,10 +1141,9 @@ if FirstQues == 2:
 				dataset.GetRasterBand(1).WriteArray(array)
 				dataset.FlushCache() # This is the way to write it to the disk
 				return dataset, dataset.GetRasterBand(1)
-
-			array_to_raster(np_data)
-	
+			
 			rasterfile = os.path.join(dirpath,'RasterIn', basenametxt+'.tiff')
+			array_to_raster(np_data, rasterfile)
 
 			#########################################################
 			# Time to clip the raster with the rasterized shapefile
@@ -1227,7 +1226,7 @@ if FirstQues == 2:
 		# Open the radolan radar dataset for Germany.
 		########################################################
 
-		dirpath = tkFileDialog.askdirectory(parent=root, title='Open the main folder with ASCII-files and press OK')
+		dirpath = filedialog.askdirectory(parent=root, title='Open the main folder with ASCII-files and press OK')
 		list = []
 		for root, dirnames, filenames in os.walk(dirpath):
 			for filename in filenames:
@@ -1271,8 +1270,8 @@ if FirstQues == 2:
 			geotransform = (xmin, xres, 0, ymin, 0, -yres)
 
 			# We are going to create the raster with the right coordinate encoding and projection
-			def array_to_raster(array):
-				dst_filename = os.path.join(dirpath,'RasterIn', basenametxt+'.tiff')
+			def array_to_raster(array, outfilename):
+				dst_filename = outfilename
 				x_pixels = 900
 				y_pixels = 900	
 				pixel_size = 1000
@@ -1302,10 +1301,9 @@ if FirstQues == 2:
 				dataset.GetRasterBand(1).WriteArray(array)
 				dataset.FlushCache() # This is the way to write it to the disk
 				return dataset, dataset.GetRasterBand(1)
-
-			array_to_raster(np_data)
 	
 			rasterfile = os.path.join(dirpath,'RasterIn', basenametxt+'.tiff')
+			array_to_raster(np_data, rasterfile)
 
 			#########################################################
 			# Time to clip the raster with the rasterized shapefile
@@ -1380,7 +1378,7 @@ if FirstQues == 2:
 		# Open the NETCDF-files for the Netherlands. In this case that is the monthly averaged precipitation, but it could also be hourly or five minute data.
 		########################################################
 
-		dirpath = tkFileDialog.askdirectory(parent=root, title='Open the main folder with NETCDF-files and press OK')
+		dirpath = filedialog.askdirectory(parent=root, title='Open the main folder with NETCDF-files and press OK')
 		list = []
 		for root, dirnames, filenames in os.walk(dirpath):
 			for filename in filenames:
@@ -1434,8 +1432,8 @@ if FirstQues == 2:
 			geotransform = (xmin, xres, 0, ymin, 0, -yres)
 
 			# We are going to create the raster with the right coordinate encoding and projection
-			def array_to_raster(array):
-				dst_filename = os.path.join(dirpath,'RasterIn', basenametxt+'.tiff')
+			def array_to_raster(array, outfilename):
+				dst_filename = outfilename
 				x_pixels = 266
 				y_pixels = 315
 				pixel_size = 1000
@@ -1465,10 +1463,9 @@ if FirstQues == 2:
 				dataset.GetRasterBand(1).WriteArray(array)
 				dataset.FlushCache() # This is the way to write it to the disk
 				return dataset, dataset.GetRasterBand(1)
-
-			array_to_raster(New)
 	
 			rasterfile = os.path.join(dirpath,'RasterIn', basenametxt+'.tiff')
+			array_to_raster(New, rasterfile)
 
 			#########################################################
 			# Time to clip the raster with the rasterized shapefile
@@ -1543,7 +1540,7 @@ if FirstQues == 2:
 		# Open the hdf5-files of the OPERA-dataset for Europe
 		########################################################
 
-		dirpath = tkFileDialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
+		dirpath = filedialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
 		list = []
 		for root, dirnames, filenames in os.walk(dirpath):
 			for filename in filenames:
@@ -1635,8 +1632,8 @@ if FirstQues == 2:
 			geotransform = (xmin, xres, 0, ymin, 0, -yres)
 
 			# We are going to create the raster with the right coordinate encoding and projection
-			def array_to_raster(array):
-				dst_filename = os.path.join(dirpath,'RasterIn', basenametxt+'.tiff')
+			def array_to_raster(array, outfilename):
+				dst_filename = outfilename
 				x_pixels = 1200
 				y_pixels = 1200
 				pixel_size = 4
@@ -1666,10 +1663,9 @@ if FirstQues == 2:
 				dataset.GetRasterBand(1).WriteArray(array)
 				dataset.FlushCache() # This is the way to write it to the disk
 				return dataset, dataset.GetRasterBand(1)
-
-			array_to_raster(np_data)
 		
 			rasterfile = os.path.join(dirpath,'RasterIn', basenametxt+'.tiff')
+			array_to_raster(np_data, rasterfile)
 
 			#########################################################
 			# Time to clip the raster with the rasterized shapefile
@@ -1751,7 +1747,7 @@ if FirstQues == 2:
 		# Open the hdf5-files of the NASA GPM IMERG High Quality Precipitation level 3 dataset.
 		########################################################
 
-		dirpath = tkFileDialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
+		dirpath = filedialog.askdirectory(parent=root, title='Open the main folder with hdf5-files and press OK')
 		list = []
 		for root, dirnames, filenames in os.walk(dirpath):
 			for filename in filenames:
@@ -1802,8 +1798,8 @@ if FirstQues == 2:
 			geotransform = (xmin, xres, 0, ymin, 0, -yres)
 
 			# We are going to create the raster with the right coordinate encoding and projection
-			def array_to_raster(array):
-				dst_filename = os.path.join(dirpath,'RasterIn', basenametxt+'.tiff')
+			def array_to_raster(array, outfilename):
+				dst_filename = outfilename
 				x_pixels = 3600
 				y_pixels = 1800
 				pixel_size = 0.1
@@ -1833,11 +1829,9 @@ if FirstQues == 2:
 				dataset.GetRasterBand(1).WriteArray(array)
 				dataset.FlushCache() # This is the way to write it to the disk
 				return dataset, dataset.GetRasterBand(1)
-
-			array_to_raster(np_data)
 		
 			rasterfile = os.path.join(dirpath,'RasterIn', basenametxt+'.tiff')
-
+			array_to_raster(np_data, rasterfile)
 
 			#########################################################
 			# Time to clip the raster with the rasterized shapefile
@@ -1938,7 +1932,7 @@ if FirstQues == 2:
 	
 		if StatQues == "1":
 			# Ask for the correct path with the results.
-			Resultpath = tkFileDialog.askdirectory(title='Open the main folder with the resulting GeoTiff-files and press OK')
+			Resultpath = filedialog.askdirectory(title='Open the main folder with the resulting GeoTiff-files and press OK')
 			ListResult = []
 			for root, dirnames, filenames in os.walk(Resultpath):
 				for filename in filenames:
@@ -2056,7 +2050,7 @@ if FirstQues == 2:
 			if DesProj == "7":
 				ShapeProj == '+proj=stere +lat_0=90 +lon_0=0.0 +lat_ts=60.0 +a=6378.137 +b=6356.752 +x_0=0 +y_0=0'	
 	
-			Resultpath = tkFileDialog.askdirectory(title='Open the main folder with the resulting GeoTiff-files and press OK')	
+			Resultpath = filedialog.askdirectory(title='Open the main folder with the resulting GeoTiff-files and press OK')	
 			ListResult = []
 			for root, dirnames, filenames in os.walk(Resultpath):
 				for filename in filenames:
@@ -2116,7 +2110,7 @@ if FirstQues == 2:
 	
 		if TypeChange == "1":	
 	
-			Resultpath = tkFileDialog.askdirectory(title='Open the main folder with the resulting GeoTiff-files and press OK')	
+			Resultpath = filedialog.askdirectory(title='Open the main folder with the resulting GeoTiff-files and press OK')	
 			ListResult = []
 			for root, dirnames, filenames in os.walk(Resultpath):
 				for filename in filenames:
@@ -2181,7 +2175,7 @@ if FirstQues == 2:
 				y = [i[1] for i in shape.shape.points[:]]
 				plt.plot(x,y)
 	
-			rasterfile = tkFileDialog.askopenfilename(title='Choose a resulting file for visualisation')
+			rasterfile = filedialog.askopenfilename(title='Choose a resulting file for visualisation')
 			dirname = os.path.dirname(rasterfile)
 			basename = os.path.basename(rasterfile)
 			basenametxt = os.path.splitext(basename)[0]
